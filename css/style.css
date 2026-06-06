@@ -74,9 +74,8 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-                 "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
-                 Helvetica, Arial, sans-serif;
+    font-family: "KaiTi", "楷体", "STKaiti", "AR PL UKai CN", "Noto Serif SC",
+                 "PingFang SC", "Microsoft YaHei", serif;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.7;
@@ -219,9 +218,24 @@ img {
     justify-content: center;
     min-height: 85vh;
     padding: 120px 24px 80px;
-    background: var(--hero-bg);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.85) 100%),
+        url('../images/微信图片_20260606142449_232_2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     text-align: center;
     transition: background 0.35s ease;
+}
+
+/* 夜间模式下背景图叠加暗色遮罩 */
+[data-theme="dark"] .hero {
+    background:
+        linear-gradient(180deg, rgba(15,15,20,0.82) 0%, rgba(15,15,20,0.92) 100%),
+        url('../images/微信图片_20260606142449_232_2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .hero-content {
@@ -233,9 +247,8 @@ img {
 }
 
 .hero-avatar {
-    font-size: 4.5rem;
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -243,7 +256,15 @@ img {
     border-radius: 50%;
     margin-bottom: 8px;
     border: 3px solid var(--border-color);
+    overflow: hidden;
     transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.hero-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .hero-title {
@@ -584,7 +605,20 @@ img {
 }
 
 .author-avatar {
-    font-size: 1.6rem;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.author-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .author-name {
@@ -820,7 +854,7 @@ img {
     /* Hero */
     .hero { min-height: 70vh; padding-top: 100px; }
     .hero-title { font-size: 2rem; }
-    .hero-avatar { width: 96px; height: 96px; font-size: 3.2rem; }
+    .hero-avatar { width: 100px; height: 100px; }
 
     /* 文章列表 */
     .articles-section { padding: 64px 0; }
@@ -848,7 +882,7 @@ img {
     .hero { min-height: 60vh; padding: 90px 20px 48px; }
     .hero-title { font-size: 1.65rem; }
     .hero-subtitle { font-size: 0.95rem; }
-    .hero-avatar { width: 80px; height: 80px; font-size: 2.8rem; }
+    .hero-avatar { width: 84px; height: 84px; }
 
     .container { padding: 0 16px; }
     .articles-grid { gap: 16px; }
