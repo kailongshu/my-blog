@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog — 探索技术与生活的交汇点</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome 6 图标库（免费 CDN） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- ==================== 导航栏 ==================== -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">✨ MyBlog</a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link active">首页</a>
+                <a href="index.html#articles" class="nav-link">文章</a>
+                <a href="index.html#about" class="nav-link">关于我</a>
+                <a href="post.html" class="nav-link">示例文章</a>
+            </nav>
+            <div class="nav-actions">
+                <!-- 夜间模式切换按钮 -->
+                <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间模式">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <!-- 移动端汉堡菜单 -->
+                <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== 主视觉区 (Hero) ==================== -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-avatar">👨‍💻</div>
+            <h1 class="hero-title">你好，我是<span class="highlight">小明</span></h1>
+            <p class="hero-subtitle">
+                一名热爱开源的全栈开发者，专注于 Web 技术与用户体验。<br>
+                在这里，我写下对技术的思考、生活的感悟，以及一切值得被记录的东西。
+            </p>
+            <div class="hero-socials">
+                <a href="https://github.com" target="_blank" class="social-link" title="GitHub" aria-label="GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank" class="social-link" title="Twitter / X" aria-label="Twitter">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="mailto:hello@example.com" class="social-link" title="Email" aria-label="Email">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <a href="#" class="social-link" title="RSS 订阅" aria-label="RSS">
+                    <i class="fa-solid fa-rss"></i>
+                </a>
+            </div>
+        </div>
+        <!-- 向下滚动提示 -->
+        <div class="scroll-hint">
+            <span>向下探索</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- ==================== 文章列表区 ==================== -->
+    <section class="articles-section" id="articles">
+        <div class="container">
+            <h2 class="section-title">📝 最新文章</h2>
+            <p class="section-desc">记录思考，分享知识。</p>
+            <div class="articles-grid">
+                <!-- 文章卡片 1 -->
+                <article class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <span class="card-image-text">JavaScript 深度探索</span>
+                    </div>
+                    <div class="card-body">
+                        <time class="card-date" datetime="2026-05-15">2026 年 5 月 15 日</time>
+                        <h3 class="card-title">
+                            <a href="post.html">深入理解 JavaScript 闭包与作用域链</a>
+                        </h3>
+                        <p class="card-excerpt">
+                            闭包是 JavaScript 中最强大的特性之一。本文将带你从执行上下文、词法环境到实际应用案例，彻底搞懂闭包的工作原理……
+                        </p>
+                        <a href="post.html" class="btn-read-more">
+                            阅读更多 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- 文章卡片 2 -->
+                <article class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <span class="card-image-text">CSS 布局大师课</span>
+                    </div>
+                    <div class="card-body">
+                        <time class="card-date" datetime="2026-04-28">2026 年 4 月 28 日</time>
+                        <h3 class="card-title">
+                            <a href="post.html">现代 CSS 布局完全指南：Flexbox 与 Grid</a>
+                        </h3>
+                        <p class="card-excerpt">
+                            Flexbox 和 Grid 是现代 Web 布局的两大基石。这篇文章用大量实例对比两种方案，帮你选择最合适的布局策略……
+                        </p>
+                        <a href="post.html" class="btn-read-more">
+                            阅读更多 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- 文章卡片 3 -->
+                <article class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <span class="card-image-text">Git 工作流最佳实践</span>
+                    </div>
+                    <div class="card-body">
+                        <time class="card-date" datetime="2026-04-10">2026 年 4 月 10 日</time>
+                        <h3 class="card-title">
+                            <a href="post.html">团队协作中的 Git 工作流：从入门到精通</a>
+                        </h3>
+                        <p class="card-excerpt">
+                            Git 不仅仅是 commit 和 push。了解 Git Flow、GitHub Flow 和 Trunk-Based 开发模式，让团队协作更加高效……
+                        </p>
+                        <a href="post.html" class="btn-read-more">
+                            阅读更多 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- 文章卡片 4 -->
+                <article class="card">
+                    <div class="card-image" style="background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+                        <span class="card-image-text">Web 性能优化</span>
+                    </div>
+                    <div class="card-body">
+                        <time class="card-date" datetime="2026-03-22">2026 年 3 月 22 日</time>
+                        <h3 class="card-title">
+                            <a href="post.html">前端性能优化实战：从 5 秒到 0.5 秒的蜕变</a>
+                        </h3>
+                        <p class="card-excerpt">
+                            页面加载速度直接影响用户体验和 SEO 排名。本文分享我在实际项目中使用的 10 条性能优化黄金法则……
+                        </p>
+                        <a href="post.html" class="btn-read-more">
+                            阅读更多 <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 关于我区域 ==================== -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">🙋 关于我</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        你好！我是一名热爱技术的前端工程师。工作 5 年来，我一直专注于构建优雅、高性能的 Web 应用。
+                    </p>
+                    <p>
+                        这个博客是我记录学习历程和分享知识的小天地。我相信「教学相长」—— 把学到的内容写下来，是掌握它的最好方式。
+                    </p>
+                    <p>
+                        技术栈：<strong>JavaScript / TypeScript、React、Vue、Node.js、Python</strong>
+                    </p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">30+</span>
+                        <span class="stat-label">篇文章</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">年经验</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">月阅读量</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 页脚 ==================== -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 MyBlog. Made with ❤️ using pure HTML, CSS &amp; JS.</p>
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="post.html">示例文章</a>
+                <a href="#about">关于</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== 脚本 ==================== -->
+    <script src="js/main.js"></script>
+</body>
+</html>

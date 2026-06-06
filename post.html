@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深入理解 JavaScript 闭包与作用域链 — MyBlog</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- ==================== 导航栏 ==================== -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">✨ MyBlog</a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="index.html#articles" class="nav-link">文章</a>
+                <a href="index.html#about" class="nav-link">关于我</a>
+                <a href="post.html" class="nav-link active">示例文章</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间模式">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle" aria-label="打开菜单">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== 文章内容 ==================== -->
+    <main class="post-container">
+        <article class="post-article">
+            <!-- 文章头部 -->
+            <header class="post-header">
+                <div class="post-meta">
+                    <span class="post-category">JavaScript</span>
+                    <span class="post-divider">·</span>
+                    <time datetime="2026-05-15">2026 年 5 月 15 日</time>
+                    <span class="post-divider">·</span>
+                    <span>阅读时间约 8 分钟</span>
+                </div>
+                <h1 class="post-title">深入理解 JavaScript 闭包与作用域链</h1>
+                <div class="post-author">
+                    <span class="author-avatar">👨‍💻</span>
+                    <span class="author-name">小明</span>
+                </div>
+            </header>
+
+            <!-- 文章正文 -->
+            <div class="post-body">
+                <!-- 引言 -->
+                <p class="post-lead">
+                    闭包（Closure）是 JavaScript 中最重要也最容易被误解的概念之一。理解闭包不仅是面试中的高频考点，更是写出高质量 JavaScript 代码的基石。这篇文章将从基础概念开始，带你深入闭包的世界。
+                </p>
+
+                <h2>一、什么是作用域？</h2>
+                <p>
+                    在理解闭包之前，我们必须先搞清楚<strong>作用域（Scope）</strong>的概念。作用域决定了变量在代码中的<strong>可访问范围</strong>。JavaScript 中有三种作用域：
+                </p>
+                <ul>
+                    <li><strong>全局作用域</strong>：在任何函数外部声明的变量，代码中的任何位置都可以访问。</li>
+                    <li><strong>函数作用域</strong>：在函数内部声明的变量，只能在函数内部访问。</li>
+                    <li><strong>块级作用域</strong>（ES6+）：用 <code>let</code> 和 <code>const</code> 声明的变量，只在最近的 <code>{ }</code> 代码块内有效。</li>
+                </ul>
+
+                <pre><code><span class="code-comment">// 作用域示例</span>
+<span class="code-keyword">const</span> globalVar = <span class="code-string">'我是全局变量'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">outer</span>() {
+    <span class="code-keyword">const</span> outerVar = <span class="code-string">'我在 outer 函数内'</span>;
+
+    <span class="code-keyword">function</span> <span class="code-function">inner</span>() {
+        <span class="code-keyword">const</span> innerVar = <span class="code-string">'我在 inner 函数内'</span>;
+        <span class="code-builtin">console</span>.log(globalVar);  <span class="code-comment">// ✅ 可访问</span>
+        <span class="code-builtin">console</span>.log(outerVar);   <span class="code-comment">// ✅ 可访问</span>
+        <span class="code-builtin">console</span>.log(innerVar);   <span class="code-comment">// ✅ 可访问</span>
+    }
+    inner();
+    <span class="code-builtin">console</span>.log(innerVar);     <span class="code-comment">// ❌ ReferenceError</span>
+}
+outer();</code></pre>
+
+                <h2>二、词法作用域与作用域链</h2>
+                <p>
+                    JavaScript 使用<strong>词法作用域</strong>（Lexical Scoping），这意味着<strong>函数的作用域在函数定义时就已经确定</strong>，而不是在函数调用时确定的。当 JavaScript 引擎查找一个变量时，它会沿着<strong>作用域链</strong>逐级向上搜索——从当前作用域开始，一直到全局作用域为止。
+                </p>
+                <p>
+                    可以把作用域链想象成一个嵌套的抽屉柜：最内层的抽屉是当前函数的作用域，如果找不到想要的变量，就打开外面一层的抽屉，直到最外层的大柜子（全局作用域）。
+                </p>
+
+                <blockquote>
+                    词法作用域是闭包能够工作的根本原因。因为内部函数「记住」了它被定义时的环境，所以即使外部函数已经执行完毕，内部函数仍然可以访问外部函数的变量。
+                </blockquote>
+
+                <h2>三、闭包的核心定义</h2>
+                <p>
+                    <strong>闭包（Closure）</strong>是指一个函数能够记住并访问它的词法作用域，即使该函数在它的词法作用域之外被执行。
+                </p>
+                <p>通俗来说：当一个函数「记住」了它出生时的环境，就形成了闭包。</p>
+
+                <pre><code><span class="code-comment">// 经典闭包示例</span>
+<span class="code-keyword">function</span> <span class="code-function">createCounter</span>() {
+    <span class="code-keyword">let</span> count = <span class="code-number">0</span>;  <span class="code-comment">// 这个变量会被闭包"记住"</span>
+
+    <span class="code-keyword">return function</span>() {
+        count++;  <span class="code-comment">// 访问了外部函数的变量</span>
+        <span class="code-keyword">return</span> count;
+    };
+}
+
+<span class="code-keyword">const</span> counter = <span class="code-function">createCounter</span>();
+<span class="code-builtin">console</span>.log(<span class="code-function">counter</span>());  <span class="code-comment">// 1</span>
+<span class="code-builtin">console</span>.log(<span class="code-function">counter</span>());  <span class="code-comment">// 2</span>
+<span class="code-builtin">console</span>.log(<span class="code-function">counter</span>());  <span class="code-comment">// 3</span></code></pre>
+
+                <p>
+                    在这个例子中，<code>createCounter</code> 执行后返回的内部函数，仍然可以访问 <code>count</code> 变量。即使 <code>createCounter</code> 已经执行完毕、它的执行上下文已经从调用栈中弹出，<code>count</code> 变量依然「存活」在内存中，因为返回的内部函数持有对它的引用。
+                </p>
+
+                <h2>四、闭包的实际应用场景</h2>
+
+                <h3>4.1 数据私有化（模块模式）</h3>
+                <p>闭包可以用来创建<strong>私有变量</strong>，对外只暴露有限的 API：</p>
+
+                <pre><code><span class="code-keyword">const</span> bankAccount = (<span class="code-keyword">function</span>() {
+    <span class="code-keyword">let</span> balance = <span class="code-number">0</span>;  <span class="code-comment">// 私有变量</span>
+
+    <span class="code-keyword">return</span> {
+        deposit(amount) {
+            balance += amount;
+            <span class="code-keyword">return</span> balance;
+        },
+        withdraw(amount) {
+            <span class="code-keyword">if</span> (amount > balance) {
+                <span class="code-keyword">return</span> <span class="code-string">'余额不足'</span>;
+            }
+            balance -= amount;
+            <span class="code-keyword">return</span> balance;
+        },
+        getBalance() {
+            <span class="code-keyword">return</span> balance;
+        }
+    };
+})();</code></pre>
+
+                <h3>4.2 函数工厂</h3>
+                <p>创建一组功能类似但行为不同的函数：</p>
+
+                <pre><code><span class="code-keyword">function</span> <span class="code-function">makeMultiplier</span>(factor) {
+    <span class="code-keyword">return function</span>(number) {
+        <span class="code-keyword">return</span> number * factor;
+    };
+}
+
+<span class="code-keyword">const</span> double = <span class="code-function">makeMultiplier</span>(<span class="code-number">2</span>);
+<span class="code-keyword">const</span> triple = <span class="code-function">makeMultiplier</span>(<span class="code-number">3</span>);
+
+<span class="code-builtin">console</span>.log(<span class="code-function">double</span>(<span class="code-number">5</span>));  <span class="code-comment">// 10</span>
+<span class="code-builtin">console</span>.log(<span class="code-function">triple</span>(<span class="code-number">5</span>));  <span class="code-comment">// 15</span></code></pre>
+
+                <h3>4.3 事件处理与异步编程</h3>
+                <p>在循环中使用闭包来"捕获"每次迭代的值：</p>
+
+                <pre><code><span class="code-comment">// ❌ 错误写法 — 所有点击事件打印同一个值</span>
+<span class="code-keyword">for</span> (<span class="code-keyword">var</span> i = <span class="code-number">1</span>; i <= <span class="code-number">5</span>; i++) {
+    button.addEventListener(<span class="code-string">'click'</span>, () => {
+        <span class="code-builtin">console</span>.log(i);  <span class="code-comment">// 总是 6</span>
+    });
+}
+
+<span class="code-comment">// ✅ 正确写法 — let 创建块级作用域</span>
+<span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = <span class="code-number">1</span>; i <= <span class="code-number">5</span>; i++) {
+    button.addEventListener(<span class="code-string">'click'</span>, () => {
+        <span class="code-builtin">console</span>.log(i);  <span class="code-comment">// 1, 2, 3, 4, 5</span>
+    });
+}</code></pre>
+
+                <h2>五、注意事项与性能考量</h2>
+                <p>闭包虽然强大，但也有一些需要注意的地方：</p>
+                <ul>
+                    <li><strong>内存占用</strong>：闭包会保持对外部变量的引用，导致它们无法被垃圾回收。不需要时应及时解除引用。</li>
+                    <li><strong>避免过度使用</strong>：不是所有场景都需要闭包。如果简单的参数传递就能解决问题，就不必创建闭包。</li>
+                    <li><strong>循环中的闭包陷阱</strong>：使用 <code>let</code> 替代 <code>var</code> 通常是解决循环闭包问题的最简单方案。</li>
+                </ul>
+
+                <h2>六、总结</h2>
+                <p>
+                    闭包不是 JavaScript 的「黑魔法」—— 它只是词法作用域的自然结果。理解作用域和作用域链是理解闭包的前提。一旦掌握了闭包，你就解锁了 JavaScript 中更高级的编程模式，包括<strong>模块化、函数式编程、高阶函数</strong>等。
+                </p>
+                <p>
+                    希望这篇文章能帮助你真正理解闭包。最好的学习方式就是动手写代码——打开浏览器控制台，把上面的示例都跑一遍，观察每一个变量的行为。
+                </p>
+            </div>
+
+            <!-- 文章底部 -->
+            <div class="post-footer-actions">
+                <a href="index.html" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> 返回首页
+                </a>
+                <button class="btn-share" id="btnShare" title="分享文章">
+                    <i class="fa-solid fa-share-nodes"></i> 分享
+                </button>
+            </div>
+
+            <!-- 分享提示 -->
+            <div class="share-toast" id="shareToast">🔗 链接已复制到剪贴板！</div>
+        </article>
+    </main>
+
+    <!-- ==================== 页脚 ==================== -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 MyBlog. Made with ❤️ using pure HTML, CSS &amp; JS.</p>
+            <div class="footer-links">
+                <a href="index.html">首页</a>
+                <a href="post.html">示例文章</a>
+                <a href="index.html#about">关于</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
