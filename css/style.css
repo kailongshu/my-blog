@@ -337,7 +337,7 @@ img {
 /* -------------------- 文章列表区 -------------------- */
 .articles-section {
     padding: 100px 0;
-    background: var(--bg-secondary);
+    background: transparent;
     transition: background-color 0.35s ease;
 }
 
@@ -449,7 +449,7 @@ img {
 /* -------------------- 关于我区域 -------------------- */
 .about-section {
     padding: 100px 0;
-    background: var(--bg-primary);
+    background: transparent;
     transition: background-color 0.35s ease;
 }
 
@@ -504,7 +504,7 @@ img {
 .footer {
     padding: 36px 0;
     border-top: 1px solid var(--border-color);
-    background: var(--bg-secondary);
+    background: transparent;
     transition: background-color 0.35s ease, border-color 0.35s ease;
 }
 
